@@ -1,0 +1,44 @@
+:root {
+  --font: "Inter", sans-serif;
+  --font-size-regular: 14px;
+  --font-weight-semibold: 600;
+  --primary-100: #F26CF9;
+  --primary-90: #F589FA;
+  --primary-50: #FCD3FE;
+  --primary-40: #FCE2FE;
+  --primary-30: #FDEDFE;
+  --secondary-110: #1C2346;
+  --secondary-100: #37437D;
+  --secondary-90: #5562A2;
+  --secondary-70: #707DBF;
+  --secondary-60: #ABB4DD;
+  --secondary-50: #D3DAF9;
+  --yellow-100: #FFCA39;
+  --yellow-90: #FFEFC3;
+  --grey-10: #FFFFFF;
+  --grey-20: #F7F7F7;
+  --grey-30: #EDEDED;
+  --grey-40: #E0E0E1;
+  --grey-50: #C3C3C4;
+  --grey-60: #9F9FA1;
+  --grey-70: #777779;
+  --grey-80: #636365;
+  --grey-90: #434345;
+  --grey-100: #1E1E20;
+  --cool-grey-10: #EEEFFF;
+  --cool-grey-20: #E4E5F5;
+  --cool-grey-30: #DDDEED;
+  --cool-grey-40: #D1D2E0;
+  --cool-grey-50: #B0B1BD;
+  --cool-grey-60: #8F8F99;
+  --cool-grey-70: #72737A;
+  --cool-grey-80: #56565C;
+  --cool-grey-90: #39393D;
+  --cool-grey-100: #131314;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
