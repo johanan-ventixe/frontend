@@ -2,6 +2,7 @@
   --font: "Inter", sans-serif;
   --font-size-regular: 14px;
   --font-weight-semibold: 600;
+  --primary-110: #C256C7;
   --primary-100: #F26CF9;
   --primary-90: #F589FA;
   --primary-50: #FCD3FE;
@@ -41,4 +42,16 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+.add-event-btn {
+  padding: 0.5rem 1rem;
+  background-color: var(--primary-100);
+  color: var(--grey-10);
+  border-radius: 2.1rem;
+}
+
+.add-event-btn:hover {
+  color: var(--grey-10);
+  background-color: var(--primary-110);
 }
