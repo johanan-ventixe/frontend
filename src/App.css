@@ -36,6 +36,7 @@
   --cool-grey-80: #56565C;
   --cool-grey-90: #39393D;
   --cool-grey-100: #131314;
+  --red-error: #FF0000;
 }
 
 * {
@@ -54,4 +55,48 @@
 .add-event-btn:hover {
   color: var(--grey-10);
   background-color: var(--primary-110);
+}
+
+.form-group {
+    text-align: left;
+    margin-bottom: 2rem;
+    &:focus {
+      border-color: blue !important;
+    }
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: var(--font-semibold);
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid var(--primary-100);
+    border-radius: 0.9rem;
+    font-size: 14px;
+
+    &:focus {
+      border: 1px solid #fff !important;
+    }
+}
+
+form .field-validation-error {
+    color: var(--red-error);
+    font-size: 0.8rem;
+    margin-top: 5px;
+    display: block;
+}
+
+form .input-validation-error {
+    border: 1px solid var(--red-error);
+}
+
+.sign-up-error {
+  color: var(--red-error);
+  margin-top: 0.7rem;
+  margin-bottom: 0.7rem;
 }

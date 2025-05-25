@@ -63,7 +63,9 @@ return (
             <p>Tickets available: {eventDetails.ticketsLeft} / {eventDetails.totalTickets}</p>
             
             {eventDetails.ticketsLeft > 0 ? (
+              <Link to={`/events/${id}/signup`}>
                 <button>Register for this Event</button>
+              </Link>
             ) : (
               <p>Sorry, this event is sold out.</p>
             )}
