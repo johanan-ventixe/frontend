@@ -3,7 +3,7 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 import EventList from '../components/EventList'
 import { useState } from 'react'
-import { useEventValidation } from '../js/validation'
+import { useEventValidation } from '../js/Validation'
 import { useEventModal, useModalFormState } from '../js/EventModal'
 
 const EventPage = () => {
