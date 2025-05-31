@@ -45,31 +45,103 @@
   box-sizing: border-box;
 }
 
-.add-event-btn {
+html, body {
+  background-color: var(--grey-10);
+  font-family: var(--font);
+  font-size: 1rem;
+  font-weight: var(--font-size-regular);
+}
+
+h4 {
+  font-size: 24px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--secondary-100);
+  margin: 0;
+}
+h5 {
+  font-weight: var(--font-weight-semibold);
+  color: var(--grey-100);
+}
+
+p {
+  color: var(--grey-70);
+}
+
+span {
+  color: var(--grey-70);
+}
+
+a {
+  color: var(--secondary-100);
+  text-decoration: none;
+  transition: color 0.2s ease;
+  font-weight: var(--font-size-regular);
+}
+
+nav, header, footer {
+  border-radius: 1rem;
+}
+
+.portal-wrapper {
+  background-color: var(--grey-10);
+  padding: 0.8rem;
+  height: 100svh;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto 1fr auto;
+  column-gap: 0.8rem;
+  row-gap: 0.8rem;
+  grid-template-areas:  "nav header"
+                        "nav main"
+                        "nav footer";
+}
+
+
+/* Buttons */
+.btn {
   padding: 0.5rem 1rem;
   background-color: var(--primary-100);
   color: var(--grey-10);
   border-radius: 2.1rem;
+  border: none;
 }
-
-.add-event-btn:hover {
+.btn:hover {
   color: var(--grey-10);
   background-color: var(--primary-110);
 }
 
+/* Modal form inputs */
+.eventForm {
+  background-color: var(--grey-20);
+  border-radius: 1rem;
+
+  label {
+    font-weight: var(--font-weight-semibold);
+    color: var(--grey-100);
+  }
+}
+
+.form-control {
+  border-color: var(--primary-100);
+}
+
+.form-control:focus {
+  border-color: var(--primary-100);
+  box-shadow: 0 0 0 0.2rem var(--primary-50) ;
+}
+
+/* Sign up form inputs*/
 .form-group {
     text-align: left;
     margin-bottom: 2rem;
-    &:focus {
-      border-color: blue !important;
-    }
 }
 
 .form-group label {
     display: block;
     font-size: 14px;
-    font-weight: var(--font-semibold);
+    font-weight: var(--font-weight-semibold);
     margin-bottom: 5px;
+    color: var(--grey-100);
 }
 
 .form-group input {
@@ -78,10 +150,12 @@
     border: 1px solid var(--primary-100);
     border-radius: 0.9rem;
     font-size: 14px;
+}
 
-    &:focus {
-      border: 1px solid #fff !important;
-    }
+.form-group input:focus {
+    outline: none ;
+    border-color: var(--primary-100);
+    box-shadow: 0 0 0 0.2rem var(--primary-50) ;
 }
 
 form .field-validation-error {
@@ -99,4 +173,357 @@ form .input-validation-error {
   color: var(--red-error);
   margin-top: 0.7rem;
   margin-bottom: 0.7rem;
+}
+
+
+/* Nav Bar */
+.sidebar {
+  grid-area: nav;
+  background-color: var(--cool-grey-10);
+  width: 16.875rem;
+  flex-direction: column;
+  border-right: 1px solid var(--color-border-line);
+}
+
+.logo {
+  padding-left: 3rem;
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+  width: 180px;
+  height: auto;
+  cursor: pointer;
+}
+.nav-links {
+  .fa-ticket-simple {
+    font-size: 1.3rem;
+    margin: 0 0.05rem;
+  }
+
+  .fa-square-check {
+    font-size: 1.3rem;
+    margin: 0 0.2rem;
+  }
+}
+.nav-links a {
+  display: block;
+  text-decoration: none;
+  border-bottom: transparent;
+  transition: background-color 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+  font-weight: bold;
+  text-decoration: none;
+  padding-left: 0.8rem;
+  margin-bottom: 1.5rem;
+
+  &:hover {
+    transition: color 0.2s ease-in-out;
+    color: var(--secondary-70);
+  }
+}
+
+.nav-links .active {
+  color: var(--primary-100);
+
+  &:hover {
+    transition: color 0.2s ease-in-out;
+    color: var(--primary-110);
+  }
+}
+
+.nav-links .active::before {
+  content: '';
+  position: absolute;
+  left: -2rem;
+  top: -0.2rem;
+  bottom: -0.2rem;
+  width: 4px;
+  background: var(--primary-90);
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+/* Header */
+.header {
+  grid-area: header;
+  height: 6rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--grey-20);
+  padding: 1.6rem;
+}
+.header-arrow-box {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  a {
+    margin-bottom: 0;
+  }
+
+  .fa-arrow-left {
+    font-size: 1.2rem;
+  }
+}
+
+/* Event List */
+.container-wrapper {
+  background-color: var(--grey-20);
+  padding: 1.6rem;
+  border-radius: 1rem;
+  height: 77dvh;
+}
+
+.events-box {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  column-gap: 2rem;
+  row-gap: 2rem;
+  width: 100%;
+  height: 72dvh;
+  overflow-y: auto;
+  border-radius: 1rem;
+}
+
+.event-card {
+  background-color: var(--grey-10);
+  padding: 0.7rem;
+  border-radius: 0.8rem;
+  margin-top: 0.5rem;
+  height: 19rem;
+  width: 17rem;
+  box-shadow: 0 0.3rem 1rem rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.event-card:hover {
+  transform: translateY(-3px);
+  border-color: #66afe9;
+  box-shadow: 0 1.1rem 0.4rem -0.5rem rgba(0, 0, 0, 0.1);
+}
+
+.card-image-box {
+  background-color: var(--grey-40);
+  border-radius: 0.8rem;
+  height: 78%;
+}
+
+.card-info-box {
+  display: grid;
+  font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.card-info-box h5 {
+  font-size: 1rem;
+  margin: 0 0.3rem;
+}
+
+.card-info-box p {
+  margin: 0.3rem;
+}
+
+.info-date {
+  color: var(--grey-70);
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+.info-location {
+  color: var(--grey-80);
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.fa-location-dot {
+  margin-right: 0.2rem;
+}
+
+/* Event Details */
+.event-details-image-box {
+  background-color: var(--grey-40);
+  width: 100%;
+  height: 21.875rem;
+  border-radius: 1rem 1rem 0 0;
+}
+.event-details {
+  background-color: var(--grey-10);
+  border-radius: 0 0 1rem 1rem;
+  padding: 1rem;
+
+  h5 {
+    font-size: 1.5rem;
+  }
+
+  .fa-location-dot {
+    margin-left: 0.05rem;
+  }
+}
+
+.event-info-box {
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid var(--grey-30);
+  display: flex;
+  justify-content: space-between;
+  
+  p {
+    font-size: 12px;
+    margin-bottom: 0.3rem;
+  }
+
+  .fa-calendar {
+    margin-right: 0.2rem;
+  }
+}
+
+.tickets-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  span {
+    font-size: 10px;
+  }
+
+  p {
+    font-size: 1rem;
+    font-weight: var(--font-weight-semibold);
+    color: var(--grey-100);
+  }
+}
+.event-description-box {
+  margin-top: 0.8rem;
+  margin-bottom: 0.8rem;
+  border-bottom: 1px solid var(--grey-30);
+  height: 9.5rem;
+  overflow-y: auto;
+
+  h6 {
+    color: var(--secondary-100);
+    font-weight: var(--font-weight-semibold);
+    font-size: 11px;
+  }
+
+  p {
+    color: var(--grey-90);
+    font-size: 12px;
+  }
+
+
+}
+.sign-up-btn .btn{
+    font-size: 0.7rem;
+}
+
+/* Sign up page */
+.sign-up-page-event {
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--grey-40);
+
+  p {
+    font-size: 0.8rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .fa-location-dot {
+    margin-left: 0.05rem;
+  }
+
+  .fa-calendar {
+    margin-right: 0.2rem;
+  }
+}
+
+/* Bookings page*/
+.attendees-box {
+  background-color: var(--grey-10);
+  padding: 1.5rem;
+  display: grid;
+  grid-template-rows: auto 1fr auto auto;
+  grid-template-areas:  "title"
+                        "attendees"
+                        "total"
+                        "button";
+  height: 72dvh;
+  border-radius: 1rem;
+
+  p {
+    padding: 0.5rem;
+  }
+}
+
+.attendees-title {
+  grid-area: title;
+  padding-left: 0.5rem;
+  border-bottom: 1px solid var(--grey-40);
+  padding-bottom: 0.5rem;
+  margin-bottom: 0;
+}
+
+.attendees-table {
+  grid-area: attendees;
+  width: 100%;
+}
+
+.attendees-table thead {
+  width: 100%;
+  color: var(--grey-70);
+}
+
+.attendees-table tbody {
+  display: block;
+  height: 49dvh;
+  overflow-y: scroll;
+  color: var(--grey-100);
+  width: 100%;
+}
+
+.attendees-table thead tr,
+.attendees-table tbody tr {
+  display: table;
+  width: 100%;
+}
+
+/* help from chatgpt to not account for scrollbar width*/
+.attendees-table thead tr {
+  width: calc(100% - 17px);
+}
+
+.attendees-table th,
+.attendees-table td {
+  width: 25%;
+  padding: 0.5rem;
+  border-bottom: 1px solid var(--grey-40);
+}
+
+.attendees-table th {
+  background-color: var(--grey-10);
+}
+
+.total-attendees {
+  grid-area: total;
+  padding-top: 1rem;
+  border-top: 1px solid var(--grey-40);
+}
+.attendees-back-button {
+  grid-area: button;
+  width: 10%;
+}
+
+/* Footer */
+.footer {
+  background-color: var(--grey-20);
+  padding: 1.6rem;
+  color: var(--grey-70);
+  font-weight: var(--font-weight-semibold);
+  font-size: 12px;
 }

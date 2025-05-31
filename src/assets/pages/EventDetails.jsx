@@ -1,44 +1,37 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import Nav from '../components/Nav';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 const EventDetails = () => {
   const { id } = useParams();
   const [event, setEvent] = useState(null);
   const [eventDetails, setEventDetails] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log("Fetching data for event ID:", id);
         setLoading(true);
+        const eventRes = await fetch(`https://johanan-eventservice-b0eyfverb8e7cnfx.swedencentral-01.azurewebsites.net/api/events/${id}`);
         
-        const eventResponse = await fetch(`https://localhost:7281/api/events/${id}`);
-        
-        if (!eventResponse.ok) {
-          throw new Error(`Failed to fetch event: ${eventResponse.status}`);
+        if (!eventRes.ok) {
+          throw new Error(`Failed to fetch event: ${eventRes.status}`);
         }
         
-        const eventData = await eventResponse.json();
-        console.log("Event data:", eventData);
+        const eventData = await eventRes.json();
         setEvent(eventData);
+        const detailsRes = await fetch(`https://johanan-eventdetailsservice-f6huebb0fsf2djcz.swedencentral-01.azurewebsites.net/api/eventdetails/event/${id}`);
         
-        console.log("Fetching event details from:", `https://localhost:7230/api/eventdetails/event/${id}`);
-        const detailsResponse = await fetch(`https://localhost:7230/api/eventdetails/event/${id}`);
-        
-        if (detailsResponse.ok) {
-          const detailsData = await detailsResponse.json();
-          console.log("Event details data:", detailsData);
+        if (detailsRes.ok) {
+          const detailsData = await detailsRes.json();
           setEventDetails(detailsData);
-        } else {
-          console.log("No event details found, status:", detailsResponse.status);
         }
-        
-        setLoading(false);
       } catch (err) {
-        console.error("Error fetching event data:", err);
         setError(err.message);
+      } finally {
         setLoading(false);
       }
     };
@@ -46,34 +39,70 @@ const EventDetails = () => {
     fetchData();
   }, [id]);
 
-  if (loading) return <div>Loading event details...</div>;
   if (error) return <div>Error: {error}</div>;
   if (!event) return <div>Event not found</div>;
 
 return (
-    <div className="event-details">
-      <h1>{event.title}</h1>
-      <p>Date: {new Date(event.eventDate).toLocaleDateString()}</p>
-      <p>Location: {event.location}</p>
-      
-      {eventDetails && (
-        <>
-          <p>Description: {eventDetails.description}</p>
-          <div>
-            <p>Tickets available: {eventDetails.ticketsLeft} / {eventDetails.totalTickets}</p>
+  <div className='portal-wrapper'>
+      <Nav />
+      <Header />
+      <main>
+        <div className="container-wrapper">
+          <div className='event-details-image-box'></div>
+          <div className="event-details">
+            <h5>{event.title}</h5>
+
+            <div className="event-info-box">
+              <div className="details-date-location-box">
+                <p className='info-date'>
+                  <i className="fa-thin fa-calendar"></i>
+                  {new Date(event.eventDate).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric'
+                    })} - {new Date(event.eventDate).toLocaleTimeString('en-US', {
+                      hour: 'numeric',
+                      minute: '2-digit',
+                      hour12: true
+                  })}
+                </p>
+                <p className='info-location'><i className="fa-light fa-location-dot"></i> {event.location}</p>
+              </div>
+
+              {eventDetails && (
+                <div className="tickets-box">
+                  <span>Tickets Left</span>
+                  <p>{eventDetails.ticketsLeft} <span> / {eventDetails.totalTickets}</span> </p>
+                </div>
+              )}
+            </div>
             
-            {eventDetails.ticketsLeft > 0 ? (
-              <Link to={`/events/${id}/signup`}>
-                <button>Register for this Event</button>
-              </Link>
-            ) : (
-              <p>Sorry, this event is sold out.</p>
-            )}
+            <div className="event-description-box">
+              <h6>About Event</h6>
+              {loading ? (
+                <p>Loading event details...</p>
+              ) : eventDetails ? (
+                <p>{eventDetails.description}</p>
+              ) : (
+                <p>No description available.</p>
+              )}
+            </div>
+            
+            <div className="sign-up-btn">
+              {eventDetails && (
+                eventDetails.ticketsLeft > 0 ? (
+                  <Link to={`/events/${id}/signup`}>
+                    <button className='btn'>Sign up for this event</button>
+                  </Link>
+                ) : (
+                  <p>Sorry, this event is sold out.</p>
+                )
+              )}
+            </div>
           </div>
-        </>
-      )}
-      
-      <Link to="/">Back to Events</Link>
+        </div>
+      </main>
+      <Footer />
     </div>
   );
 }

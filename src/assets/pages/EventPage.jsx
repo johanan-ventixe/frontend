@@ -1,9 +1,8 @@
-import Nav from '../Components/Nav'
-import Header from '../Components/Header'
-import Footer from '../Components/Footer'
-import EventList from '../Components/EventList'
-import { Link } from 'react-router-dom'
-import React, { useState } from 'react'
+import Nav from '../components/Nav'
+import Header from '../components/Header'
+import Footer from '../components/Footer'
+import EventList from '../components/EventList'
+import { useState } from 'react'
 import { useEventValidation } from '../js/validation'
 import { useEventModal, useModalFormState } from '../js/EventModal'
 
@@ -17,24 +16,10 @@ const EventPage = () => {
   });
 
   const {
-    validationErrors,
-    handleFieldBlur,
-    clearValidationErrors,
-    validateForm,
-    getFieldClassName,
-    handleFieldChange
-  } = useEventValidation();
+    validationErrors, handleFieldBlur, clearValidationErrors, validateForm, getFieldClassName, handleFieldChange } = useEventValidation();
 
   const { openModal, closeModalAfterDelay } = useEventModal();
-  const { 
-    loading, 
-    error, 
-    success, 
-    resetFormState, 
-    setLoadingState, 
-    setErrorState, 
-    setSuccessState 
-  } = useModalFormState();
+  const { loading, error, success, resetFormState, setLoadingState, setErrorState, setSuccessState } = useModalFormState();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -73,7 +58,7 @@ const EventPage = () => {
     setLoadingState(true);
     
     try {
-      const eventResponse = await fetch('https://localhost:7281/api/events', {
+      const eventRes = await fetch('https://johanan-eventservice-b0eyfverb8e7cnfx.swedencentral-01.azurewebsites.net/api/Events', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -85,14 +70,13 @@ const EventPage = () => {
         })
       });
       
-      if (!eventResponse.ok) {
-        throw new Error(`Failed to create event: ${eventResponse.status}`);
+      if (!eventRes.ok) {
+        throw new Error(`Failed to create event: ${eventRes.status}`);
       }
       
-      const eventData = await eventResponse.json();
-      console.log("Event created:", eventData);
+      const eventData = await eventRes.json();
       
-      const detailsResponse = await fetch('https://localhost:7230/api/eventdetails', {
+      const detailsRes = await fetch('https://johanan-eventdetailsservice-f6huebb0fsf2djcz.swedencentral-01.azurewebsites.net/api/eventdetails', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -105,11 +89,9 @@ const EventPage = () => {
         })
       });
       
-      if (!detailsResponse.ok) {
-        throw new Error(`Failed to create event details: ${detailsResponse.status}`);
+      if (!detailsRes.ok) {
+        throw new Error(`Failed to create event details: ${detailsRes.status}`);
       }
-      
-      console.log("Event details created successfully");
       setSuccessState();
       resetForm();
       
@@ -119,7 +101,6 @@ const EventPage = () => {
       }, 2000);
       
     } catch (err) {
-      console.error("Error creating event:", err);
       setErrorState(err.message);
     }
   };
@@ -127,18 +108,10 @@ const EventPage = () => {
   return (
     <div className='portal-wrapper'>
       <Nav />
-      <Header />
+      <Header onAddEventClick={handleAddEventClick} />
       <main>
-        <div className="container" style={{ display: 'flex', justifyContent: 'space-between', padding: '0 20px', alignItems: 'center' }}>
+        <div className="container-wrapper">
           <EventList />
-          <button 
-            type="button"
-            className="add-event-btn btn"
-            onClick={handleAddEventClick}
-          >
-            + Add Event
-          </button>
-          <Link to="/bookings">View Bookings</Link>
         </div>
       </main>
       <Footer />
@@ -147,112 +120,106 @@ const EventPage = () => {
       <div className="modal fade" id="eventModal" tabIndex="-1" aria-labelledby="eventModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
         <div className="modal-dialog">
           <div className="modal-content">
-            <form onSubmit={handleSubmit} id="eventForm" noValidate>
+            <form onSubmit={handleSubmit} id="eventForm" className='eventForm' noValidate>
               <div className="modal-header">
-                <h2 className="modal-title" id="eventModalLabel">Add Event</h2>
+                <h4 className="modal-title" id="eventModalLabel">Add Event</h4>
                 <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div className="modal-body">
-                {success ? (
-                  <div style={{ textAlign: 'center', color: 'green' }}>
-                    <p>Event created successfully!</p>
-                  </div>
-                ) : (
-                  <>
-                    <div className="mb-4">
-                      <label htmlFor="title" className="form-label">Event Title:</label>
-                      <input
-                        type="text"
-                        name="title"
-                        id="title"
-                        className={getFieldClassName('title')}
-                        value={formData.title}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        required
-                      />
-                      {validationErrors.title && (
-                        <span className="field-validation-error text-danger">{validationErrors.title}</span>
-                      )}
-                    </div>
-                    
-                    <div className="mb-4">
-                      <label htmlFor="eventDate" className="form-label">Date and Time:</label>
-                      <input
-                        type="datetime-local"
-                        name="eventDate"
-                        id="eventDate"
-                        className={getFieldClassName('eventDate')}
-                        value={formData.eventDate}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        required
-                      />
-                      {validationErrors.eventDate && (
-                        <span className="field-validation-error text-danger">{validationErrors.eventDate}</span>
-                      )}
-                    </div>
-                    
-                    <div className="mb-4">
-                      <label htmlFor="location" className="form-label">Location:</label>
-                      <input
-                        type="text"
-                        name="location"
-                        id="location"
-                        className={getFieldClassName('location')}
-                        value={formData.location}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        required
-                      />
-                      {validationErrors.location && (
-                        <span className="field-validation-error text-danger">{validationErrors.location}</span>
-                      )}
-                    </div>
-                    
-                    <div className="mb-4">
-                      <label htmlFor="description" className="form-label">Description:</label>
-                      <textarea
-                        name="description"
-                        id="description"
-                        className={getFieldClassName('description')}
-                        rows="4"
-                        value={formData.description}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        required
-                      />
-                      {validationErrors.description && (
-                        <span className="field-validation-error text-danger">{validationErrors.description}</span>
-                      )}
-                    </div>
-                    
-                    <div className="mb-4">
-                      <label htmlFor="totalTickets" className="form-label">Total Tickets:</label>
-                      <input
-                        type="number"
-                        name="totalTickets"
-                        id="totalTickets"
-                        className={getFieldClassName('totalTickets')}
-                        value={formData.totalTickets}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        min="1"
-                        max="10000"
-                        required
-                      />
-                      {validationErrors.totalTickets && (
-                        <span className="field-validation-error text-danger">{validationErrors.totalTickets}</span>
-                      )}
-                    </div>
-                    
-                    {error && (
-                      <div className="alert alert-danger" role="alert">
-                        {error}
-                      </div>
+                <>
+                  <div className="mb-4">
+                    <label htmlFor="title" className="form-label">Event Title:</label>
+                    <input
+                      type="text"
+                      name="title"
+                      id="title"
+                      className={getFieldClassName('title')}
+                      value={formData.title}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      required
+                    />
+                    {validationErrors.title && (
+                      <span className="field-validation-error text-danger">{validationErrors.title}</span>
                     )}
-                  </>
-                )}
+                  </div>
+                  
+                  <div className="mb-4">
+                    <label htmlFor="eventDate" className="form-label">Date and Time:</label>
+                    <input
+                      type="datetime-local"
+                      name="eventDate"
+                      id="eventDate"
+                      className={getFieldClassName('eventDate')}
+                      value={formData.eventDate}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      required
+                    />
+                    {validationErrors.eventDate && (
+                      <span className="field-validation-error text-danger">{validationErrors.eventDate}</span>
+                    )}
+                  </div>
+                  
+                  <div className="mb-4">
+                    <label htmlFor="location" className="form-label">Location:</label>
+                    <input
+                      type="text"
+                      name="location"
+                      id="location"
+                      className={getFieldClassName('location')}
+                      value={formData.location}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      required
+                    />
+                    {validationErrors.location && (
+                      <span className="field-validation-error text-danger">{validationErrors.location}</span>
+                    )}
+                  </div>
+                  
+                  <div className="mb-4">
+                    <label htmlFor="description" className="form-label">Description:</label>
+                    <textarea
+                      name="description"
+                      id="description"
+                      className={getFieldClassName('description')}
+                      rows="4"
+                      value={formData.description}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      required
+                    />
+                    {validationErrors.description && (
+                      <span className="field-validation-error text-danger">{validationErrors.description}</span>
+                    )}
+                  </div>
+                  
+                  <div className="mb-4">
+                    <label htmlFor="totalTickets" className="form-label">Total Tickets:</label>
+                    <input
+                      type="number"
+                      name="totalTickets"
+                      id="totalTickets"
+                      className={getFieldClassName('totalTickets')}
+                      value={formData.totalTickets}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      min="1"
+                      max="10000"
+                      required
+                    />
+                    {validationErrors.totalTickets && (
+                      <span className="field-validation-error text-danger">{validationErrors.totalTickets}</span>
+                    )}
+                  </div>
+                  
+                  {error && (
+                    <div className="alert alert-danger" role="alert">
+                      {error}
+                    </div>
+                  )}
+                </>
               </div>
               {!success && (
                 <div className="modal-footer">

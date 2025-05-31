@@ -82,21 +82,6 @@ export const validateSignUpField = (fieldName, value) => {
       }
       break;
       
-    case 'phoneNumber':
-      if (value && value.trim() !== "") {
-        const phonePattern = /^[\+]?[1-9][\d]{0,15}$/;
-        const cleanPhone = value.replace(/[\s\-\(\)]/g, '');
-        
-        if (!phonePattern.test(cleanPhone)) {
-          errorMessage = "Please enter a valid phone number.";
-        } else if (cleanPhone.length < 7) {
-          errorMessage = "Phone number must be at least 7 digits long.";
-        } else if (cleanPhone.length > 15) {
-          errorMessage = "Phone number cannot be longer than 15 digits.";
-        }
-      }
-      break;
-      
     default:
       break;
   }

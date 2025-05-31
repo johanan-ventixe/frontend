@@ -1,22 +1,26 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import EventCard from './EventCard'
 
-const EventList = () => {
+const EventList = ({ onEventClick }) => {
   const [events, setEvents] = useState([])
-  const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const getEvents = async () => {
       try {
-        const res = await fetch("https://localhost:7281/api/events")
+        setLoading(true)
+        const res = await fetch("https://johanan-eventservice-b0eyfverb8e7cnfx.swedencentral-01.azurewebsites.net/api/events")
         
         if (!res.ok) {
           throw new Error(`API error: ${res.status}`)
         }
 
         const data = await res.json()
-        setEvents(data)
+
+        const sortedEvents = data.sort((a, b) => new Date(a.eventDate) - new Date(b.eventDate))
+
+        setEvents(sortedEvents)
       } catch (err) {
         setError(err.message)
       } finally {
@@ -31,9 +35,9 @@ const EventList = () => {
   if (error) return <div>Error: {error}</div>
 
   return (
-    <section>
+    <section className="events-box" id="events-box">
       {events.map(event => (
-        <EventCard key={event.id} card={event} />
+        <EventCard key={event.id} card={event} onEventClick={onEventClick} />
       ))}
     </section>
   )
