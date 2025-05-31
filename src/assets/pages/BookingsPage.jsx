@@ -12,7 +12,9 @@ const BookingsPage = () => {
     try {
       const res = await fetch(`https://johanan-signupservice-a4ajefdnacd8akc2.swedencentral-01.azurewebsites.net/api/signup/event/${eventId}`);
       const data = await res.json();
-      setSignups(data);
+
+      const sortedSignups = data.sort((a, b) => new Date(b.signUpDate) - new Date(a.signUpDate));
+      setSignups(sortedSignups);
     } catch (error) {
       setSignups([]);
     }
